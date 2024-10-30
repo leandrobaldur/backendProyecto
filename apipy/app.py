@@ -98,5 +98,19 @@ def eliminar_categoria(id):
     conexion.close()
     return jsonify({'mensaje': 'Categoría eliminada'})
 
+@app.route('/referencia', methods=['GET'])
+def obtener_referencia():
+    conexion = obtener_conexion()
+    referencia = None
+    with conexion.cursor() as cursor:
+        cursor.execute("SELECT*  FROM referencias LIMIT 1")  
+        referencia = cursor.fetchone()
+    conexion.close()
+    
+    if referencia:
+        return jsonify({'atributo': referencia[0]})
+    else:
+        return jsonify({'mensaje': 'No se encontró ninguna referencia'}), 404
+
 if __name__ == '__main__':
     app.run(debug=True)
